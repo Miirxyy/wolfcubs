@@ -1,0 +1,1 @@
+The core concept of the project is to develop an online multiplayer game utilizing concurrent programming techniques, specifically for a turn-based strategy game. The primary programming language employed will be Java, while the development of the graphical user interface (GUI) will be facilitated by Java FX.
