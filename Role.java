@@ -39,7 +39,6 @@ public abstract class Role {
         roles.add(Villager.createVillagers().get(1));
         roles.add(Villager.createVillagers().get(2));
         
-        
         return roles;
 
     }
