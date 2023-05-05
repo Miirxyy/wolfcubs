@@ -25,7 +25,7 @@ public class GameRoom {
             // Remove the role of the chosen index from the list
             Role assignRole = roles.remove(index);
             
-            players.get(index).setRole(assignRole);
+            players.get(i).setRole(assignRole);
             
         }
     }    
