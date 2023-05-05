@@ -2,11 +2,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ *
+ * @author amirahasfa
+ */
+
 public class GameRoom {
+    
+    private List<Player> players;
     
     public void assignRole(List<Player> players) {
 
-        // Create a list of available type of villagers to be assign at random
+        // Create a list of available role to be assign at random for each player
         List<Role> roles = new ArrayList<>();
         roles.add(new Werewolf());
         roles.add(new Werewolf());
@@ -18,15 +25,19 @@ public class GameRoom {
         
         Random random = new Random();
         
-        for (int i = 1; i < players.size(); i++) {
+        // Iterate the list of players to assign role
+        for (int i = 0; i < players.size(); i++) {
             
             int index = random.nextInt(roles.size());
             
             // Remove the role of the chosen index from the list
             Role assignRole = roles.remove(index);
             
+            // Assign role to players 
             players.get(i).setRole(assignRole);
             
         }
-    }    
+
+    }
+
 }
