@@ -25,7 +25,7 @@ public class Player {
         
     }
     
-    public Player(Role role) {
+    protected void setPlayerRole(Role role) {
         this.role = role;
     }
     
