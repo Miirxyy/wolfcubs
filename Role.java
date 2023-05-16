@@ -29,21 +29,21 @@ public abstract class Role {
     public abstract void performAbility(Player player);
 
 
-    public static List<Role> createRoleList() {
-
-        // Create a list of available type of villagers to be assign at random
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Werewolf());
-        roles.add(new Werewolf());
-        roles.add(new Seer());
-        roles.add(new Doctor());
-        roles.add(Villager.createVillagers().get(0));
-        roles.add(Villager.createVillagers().get(1));
-        roles.add(Villager.createVillagers().get(2));
-
-        return roles;
-
-    }
+//    public static List<Role> createRoleList() {
+//
+//        // Create a list of available type of villagers to be assign at random
+//        List<Role> roles = new ArrayList<>();
+//        roles.add(new Werewolf());
+//        roles.add(new Werewolf());
+//        roles.add(new Seer());
+//        roles.add(new Doctor());
+//        roles.add(Villager.createVillagers().get(0));
+//        roles.add(Villager.createVillagers().get(1));
+//        roles.add(Villager.createVillagers().get(2));
+//
+//        return roles;
+//
+//    }
 
 
 }
