@@ -4,12 +4,15 @@
  */
 package warewolfculb;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -19,17 +22,24 @@ import javafx.scene.control.TextField;
 public class LobbyInterfaceController {     // implements Initializable
 
     private Lobby lobby; // Reference to the Lobby class
+    private Player player;
     private String sessionId; // Session ID for the current player
 
     @FXML
     private TextField roomCodeField;
     @FXML
     private TextArea RULES;
+    @FXML
+    private Text USERNAME;
+    @FXML
+    private Button joinRoomButton;
     
     public void initialize() {
         lobby = new Lobby(); // Instantiate the Lobby class
         int userId = lobby.generateUserId();
         sessionId = generateSessionId(userId); // Generate session ID for the player
+        player = new Player(String.valueOf(userId), "Player" + userId);
+        USERNAME.setText("Welcome Player " + player.getPlayerID());
         System.out.println("Welcome! Your User ID: " + userId + ", Session ID: " + sessionId);
         String paragraph =  """
                             Steps:
@@ -51,20 +61,44 @@ public class LobbyInterfaceController {     // implements Initializable
     
     @FXML
     private void joinRoomButtonClicked(ActionEvent event) {
+        lobby = new Lobby();
+        String userId = player.getPlayerID();
+        boolean success = lobby.joinPublicRoom(userId);
+        if (success) {
+            // Close the current stage
+            Stage stage = (Stage) joinRoomButton.getScene().getWindow();
+            stage.close();
+
+            // Show the ChatPlatform stage
+            Platform.runLater(() -> {
+                ChatPlatform chatPlatform = new ChatPlatform();
+                chatPlatform.start(new Stage());
+            });
+        } else {
+            showJoinRoomErrorAlert("Failed to join public room. Maximum number of players reached.");
+        }
         //can get the user id from the database
-        lobby.getUserId();
-        int userId = lobby.getUserId();
-        lobby.joinPublicRoom(userId);
-        System.out.println("Joined public room. User ID: " + userId);
+//        String userId = player.getPlayerID();
+//        lobby.joinPublicRoom(userId);
+//        System.out.println("Joined public room. User ID: " + userId);
+    }
+    
+    private void showJoinRoomErrorAlert(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Join Room Error");
+        alert.setHeaderText(null);
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
     }
 
     @FXML
     private void createRoomButtonClicked(ActionEvent event) {
         //can get the user id from the database
-        int userId = lobby.getUserId();
+        String userId = player.getPlayerID();
         String roomCode = lobby.createPrivateRoom(userId);
         if (roomCode != null) {
             System.out.println("Created private room. User ID: " + userId + ", Room Code: " + roomCode);
+            showRoomCodeAlert(roomCode);
         } else {
             System.out.println("Failed to create private room. Maximum number of private rooms reached.");
         }
@@ -85,6 +119,18 @@ public class LobbyInterfaceController {     // implements Initializable
     private String generateSessionId(int userId) {
         // Generate session ID based on user ID or any other logic you prefer
         return "SESSION_" + userId;
+    }
+    
+    private void showRoomCodeAlert(String roomCode) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Room Code");
+        alert.setHeaderText("Your room code is:");
+        alert.setContentText(roomCode);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.setAlwaysOnTop(true); // Ensure the alert dialog is always on top
+
+        alert.showAndWait();
     }
     /**
      * Initializes the controller class.

@@ -12,12 +12,13 @@ import java.util.concurrent.locks.*;
  * @author Farisah
  */
 public class Lobby{
-    private static int userIdStart = 0;
+    private static int userIdStart = 1;
     private static int roomCounter = 0;
-    private static int[] user;
     private static final int MAX_PUBLIC_ROOMS = 10;
     private static final int MAX_PRIVATE_ROOMS = 10;
 
+    
+//    private List<Player> players = new ArrayList<>();
     private static final List<Room> publicRooms = new ArrayList<>();
     private static final List<Room> privateRooms = new ArrayList<>();
     private static final Lock publicRoomsLock = new ReentrantLock();
@@ -37,14 +38,14 @@ public class Lobby{
     
     //If user join public room
     //
-    public static void joinPublicRoom(int userId) {
+    public static boolean joinPublicRoom(String userId) {
         publicRoomsLock.lock();
         try {
             //find available room
             for (Room room : publicRooms) {
                 if (!room.isFull()) {
                     room.addUser(userId);
-                    return;
+                    return true;
                 }
             }
             // If no available public room, create new one
@@ -55,16 +56,17 @@ public class Lobby{
                 new Thread(room).start(); // Start the room as a thread
             } else {
                 // If all public rooms are full
+                return false;
             }
         } finally {
             publicRoomsLock.unlock();
         }
+        return true;
     }
     
     //if user create private room
-    //user can join room code 2 even if there is no room 2 created before!!!!!!!!!!!!!!
     //private room would be automatically destroyed if more than 5 min waiting time
-    public static String createPrivateRoom(int userId) {
+    public static String createPrivateRoom(String userId) {
         privateRoomsLock.lock();
         try {
             if (privateRooms.size() >= MAX_PRIVATE_ROOMS) {

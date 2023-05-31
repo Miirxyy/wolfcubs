@@ -31,10 +31,6 @@ public class LobbyInterface extends Application {
     
 //    private Lobby lobby; // Reference to the Lobby class
 //
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-//
 //    @Override
 //    public void start(Stage primaryStage) {
 //        primaryStage.setTitle("Game Lobby");

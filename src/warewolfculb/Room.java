@@ -14,14 +14,14 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 class Room implements Runnable{
     private static final int MAX_USERS_PER_ROOM = 7;
-    private final List<Integer> users = new ArrayList<>();
+    private final List<String> users = new ArrayList<>();
     private final Lock lock = new ReentrantLock();
 
     public boolean isFull() {
         return users.size() >= MAX_USERS_PER_ROOM;
     }
 
-    public void addUser(int userId) {
+    public void addUser(String userId) {
         lock.lock();
         try {
             if (users.size() >= MAX_USERS_PER_ROOM) {
